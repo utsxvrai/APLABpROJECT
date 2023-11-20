@@ -11,8 +11,8 @@ conn = sqlite3.connect('bus_booking.db')
 # Create cursor
 cur = conn.cursor()
 
-# Create table
-cur.execute("""CREATE TABLE IF NOT EXISTS bus(
+# Create table - bus
+cur.execute("""CREATE TABLE IF NOT EXISTS bus(   
     bus_id INTEGER PRIMARY KEY AUTOINCREMENT,
     bus_no TEXT NOT NULL,
     source TEXT NOT NULL,
@@ -23,7 +23,47 @@ cur.execute("""CREATE TABLE IF NOT EXISTS bus(
     fare INTEGER NOT NULL
 )""")
 
+# Create table - operator
+curr.execute("""CREATE TABLE IF NOT EXISTS operator(
+    CREATE TABLE IF NOT EXISTS operator (
+    opr_id VARCHAR(5) PRIMARY KEY,
+    name VARCHAR(20),
+    address VARCHAR(50),
+    phone CHAR(10),
+    email VARCHAR(30)
+)""")
 
+# Create table - running buses
+curr.execute("""CREATE TABLE IF NOT EXISTS runningBuses(
+    CREATE TABLE IF NOT EXISTS running (
+    b_id VARCHAR(5),
+    run_date DATE,
+    seat_avail INT,
+    FOREIGN KEY (b_id) REFERENCES bus(bus_id)
+)""")
+
+# Create table - route
+curr.execute("""CREATE TABLE IF NOT EXISTS route(
+    r_id VARCHAR(5) NOT NULL PRIMARY KEY,
+    s_name VARCHAR(20),
+    s_id VARCHAR(5),
+    e_name VARCHAR(20),
+    e_id VARCHAR(5)
+)""")
+
+# Create table - booking history
+curr.execute("""CREATE TABLE IF NOT EXISTS bookingHistory(
+    name VARCHAR(20),
+    gender CHAR(1),
+    no_of_seat INT,
+    phone CHAR(10),
+    age INT,
+    booking_ref VARCHAR(10) NOT NULL PRIMARY KEY,
+    booking_date DATE,
+    travel_date DATE,
+    bid VARCHAR(5),
+    FOREIGN KEY (bid) REFERENCES bus(bus_id)
+)""")
 
 
 class BusBookingSystem:
