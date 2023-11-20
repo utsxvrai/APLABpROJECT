@@ -18,13 +18,13 @@ cur.execute('CREATE TABLE IF NOT EXISTS bus (b_id VARCHAR(5) NOT NULL PRIMARY KE
 cur.execute("CREATE TABLE IF NOT EXISTS operator(opr_id VARCHAR(5) PRIMARY KEY,name VARCHAR(20),address VARCHAR(50),phone CHAR(10),email VARCHAR(30))")
 
 # Create table - running buses
-cur.execute("CREATE TABLE IF NOT EXISTS runningBuses(b_id VARCHAR(5),run_date DATE,seat_avail INT,FOREIGN KEY (b_id) REFERENCES bus(bus_id))")
+cur.execute("CREATE TABLE IF NOT EXISTS runningBuses(b_id VARCHAR(5),run_date DATE,seat_avail INT,FOREIGN KEY (b_id) REFERENCES bus(b_id))")
 
 # Create table - route
 cur.execute("CREATE TABLE IF NOT EXISTS route(r_id VARCHAR(5) NOT NULL PRIMARY KEY,s_name VARCHAR(20),s_id VARCHAR(5),d_name VARCHAR(20),d_id VARCHAR(5))")
 
 # Create table - booking history
-cur.execute("CREATE TABLE IF NOT EXISTS bookingHistory(name VARCHAR(20),gender CHAR(1),no_of_seat INT,phone CHAR(10),age INT,booking_ref VARCHAR(10) NOT NULL PRIMARY KEY,booking_date DATE,travel_date DATE,bid VARCHAR(5),FOREIGN KEY (bid) REFERENCES bus(bus_id))")
+cur.execute("CREATE TABLE IF NOT EXISTS bookingHistory(name VARCHAR(20),gender CHAR(1),no_of_seat INT,phone CHAR(10),age INT,booking_ref VARCHAR(10) NOT NULL PRIMARY KEY,booking_date DATE,travel_date DATE,bid VARCHAR(5),FOREIGN KEY (bid) REFERENCES bus(b_id))")
 
 
 class BusBookingSystem:
@@ -48,7 +48,7 @@ class BusBookingSystem:
 
         def home_to_check_booking():
             root.destroy()
-            self.check_booking_page()
+            self.bookingPage()
 
         def home_to_db_add_page():
             root.destroy()
@@ -137,11 +137,157 @@ class BusBookingSystem:
                         for j in i:
                             route_id = str(j)
                     
-                    cur.execute("Select b_id from running where r_id=?", (route_id))
+                    cur.execute("Select b_id from runningBuses where r_id=?", (route_id))
                     busCheck = cur.fetchall()
-                    #
+                    
+                    if len(busCheck) == 0:
+                        messagebox.showerror('Error', 'No bus found!')
+
+                    else:
+                        busIdList = []
+                        for i in busCheck:
+                            for j in i:
+                                busIdList.append(j)
+
+                        newBusIdList = []
+                        for i in range(len(busIdList)):
+                            cur.execute("Select b_id from runningBuses where run_date=? and b_id=?",(date, busIdList[i])) 
+                            busD = cur.fetchall()
+                            if len(busCheck) != 0:
+                                newBusIdList.append(busD)
+                            else:
+                                pass
+
+                        bh = []
+                        for i in newBusIdList:
+                            for j in i:
+                                bh.append(j[0])
+
+                        if len(bh) == 0:
+                            messagebox.showerror('Error', 'No bus found!')
+
+                        else :
+                            Label(root,text='select bus ',font='Arial 10 bold').grid(row=6,column=3)
+                            Label(root, text='operator ', font='Arial 10 bold').grid(row=6, column=4)
+                            Label(root, text='b_type ', font='Arial 10 bold').grid(row=6, column=5)
+                            Label(root, text='Available Capacity ', font='Arial 10 bold').grid(row=6, column=6)
+                            Label(root, text='fare ', font='Arial 10 bold').grid(row=6, column=7)
+                            r=7
+                            busNo=IntVar()
+                            selectBus = IntVar()
+                            sNo=1
+                            for i in b:
+                                busNo=i
+                                cur.execute('select op_id from bus where b_id=?',(i))
+                                res_opr_id=cur.fetchall()
+                                for j in res_opr_id:
+                                    opr_id=j[0]
+
+                                cur.execute('select name from operator where opr_id=?',(opr_id))
+                                res_opr_name=cur.fetchall()
+                                for j in res_opr_name:
+                                    opr_name=j[0]
+
+                                cur.execute('select b_type from bus where b_id=?',(i))
+                                res_b_type=cur.fetchall()
+                                for j in res_b_type:
+                                    b_type=j[0]
+
+                                cur.execute('select seat_avail from runningBuses where run_date=? and b_id=?',(jd,i))
+                                res_seat_avail=cur.fetchall()
+                                for j in res_seat_avail:
+                                    seat_avail=j[0]
+
+                                cur.execute('select fair from bus where b_id=?',(i))
+                                res_fare=cur.fetchall()
+                                for j in res_fare:
+                                    fare=j[0]
+
+                                def show_button():
+                                        Button(root, text='PROCEED', bg='green', fg='black', font='Arial 12 bold',command=proceed).grid(row=10, column=9, padx=30)
+                                var=Radiobutton(root,value=busNo,variable=selectBus,command=show_button)
+                                var.grid(row=r,column=3)
+                                Label(root, text=opr_name, font='Arial 10 bold').grid(row=r, column=4)
+                                Label(root, text=b_type, font='Arial 10 bold').grid(row=r, column=5)
+                                Label(root, text=seat_avail, font='Arial 10 bold').grid(row=r, column=6)
+                                Label(root, text=fare, font='Arial 10 bold').grid(row=r, column=7)
+
+                                r+=1
+                                sNo+=1
+
+                            def proceed():
+                                f_b_id = selectBus.get()
+                                Label(root,text="\n\n\n").grid(row=10,columnspan=12)
+                                Label(root,text='Fill passenger details to book the bus', bg='light green', fg='dark green', font='Arial 18 bold').grid(row=11,columnspan=12)
+                                Label(root, text="\n\n\n").grid(row=12,columnspan=12)
+
+                                Label(root,text='name',font='Arial 10 bold').grid(row=13,column=3)
+                                pname = Entry(root, font='Arial 12 bold', fg='black')
+                                pname.grid(row=13,column=4)
+
+                                gender = StringVar()
+                                gender.set("Select Gender")
+                                opt = ["M", "F", "T"]
+                                g_menu = OptionMenu(root, gender, *opt)
+                                g_menu.grid(row=13, column=6)
+
+                                Label(root, text='no of seats', font='Arial 10 bold').grid(row=13, column=7)
+                                pseat=Entry(root, font='Arial 12 bold', fg='black')
+                                pseat.grid(row=13,column=8)
+
+                                Label(root, text='mobile', font='Arial 10 bold').grid(row=14, column=3)
+                                pmobile = Entry(root, font='Arial 12 bold', fg='black')
+                                pmobile.grid(row=14, column=4)
+
+                                Label(root, text='age', font='Arial 10 bold').grid(row=14, column=5)
+                                page = Entry(root, font='Arial 12 bold', fg='black')
+                                page.grid(row=14, column=6)
+
+                                def book_seat():
+                                    name=pname.get()
+                                    gen=gender.get()
+                                    seats=pseat.get()
+                                    seats=int(seats)
+                                    age=page.get()
+                                    age=int(age)
+                                    mobile=pmobile.get()
+                                    bid=selectBus.get()
+                                    if len(mobile)==10:
+                                        if len(name)>0 and len(name)<20:
+                                            if age>0 and age<150:
+                                                if seats>0 and seats<60:
+                                                        #print(name, gen, age, mobile, seats, bid)
+                                                    booking_ref=1
+                                                    cur.execute('select booking_ref from bookingHistory')
+                                                    res_ref=cur.fetchall()
+                                                    ref=[]
+                                                    for i in res_ref:
+                                                        ref.append(i[0])
+                                                    booking_ref=len(ref)+1
+                                                        #print(booking_ref)
+                                                    cur_date=date.today()
+                                                    cur.execute('insert into bookingHistory(name,gender,no_of_seat,phone,age,booking_ref,booking_date,travel_date,bid) values(?,?,?,?,?,?,?,?,?)',(name,gen,seats,mobile,age,booking_ref,cur_date,jd,bid))
+                                                    con.commit()
+                                                    cur.execute('select seat_avail from runningBuses where b_id=? and run_date=?',(bid,jd))
+                                                    res_s=cur.fetchall()
+                                                    s=res_s[0][0]
+                                                    s=s-seats
+                                                    cur.execute('update runningBuses set seat_avail=? where b_id=? and run_date=?',(s,bid,jd))
+                                                    con.commit()
+                                                    showinfo("succefull","booking successfull")
+
+                                                else:
+                                                    showerror("booking limit exceed","you can only book upto 5 seats")
+                                            else:
+                                                showerror("incorrect age","enter valid age")
+                                        else:
+                                            howerror("incorrect name","enter valid name")
+                                    else:
+                                        showerror("invalid mobile no","enter valid mobile no")
 
 
+                                Button(root, text='BOOK SEAT', bg='green', fg='black', font='Arial 12 bold',
+                                        command=book_seat).grid(row=16, column=9, padx=30)
 
             else:
                 messagebox.showerror('Error', 'Check the details entered!')
@@ -181,9 +327,78 @@ class BusBookingSystem:
         root.mainloop()
 
 
-    def check_booking_page(self):
-        # Implement the check booking page here
-        pass
+    def bookingPage(self):
+        root = Tk()
+        root.title("BOOKING PAGE")
+        root.state("zoomed")
+        h, w = root.winfo_screenheight(), root.winfo_screenwidth()
+        root.geometry('%dx%d+0+0' % (w, h))
+        bus = PhotoImage(file='Bus_for_project.png')
+        home=PhotoImage(file='home.png')
+
+        def check_booking_to_home():
+            root.destroy()
+            self.home_page()
+        def check_tkt():
+            mobile=mob.get()
+            if len(mobile)==10 and mobile.isdigit():
+                cur.execute('select * from booking_history where phone=?',[mobile])
+                res_tkt=cur.fetchall()
+                for i in res_tkt:
+                    name=i[0]
+                    gen=i[1]
+                    seat=i[2]
+                    phone=i[3]
+                    age=i[4]
+                    ref=i[5]
+                    book_date=i[6]
+                    travel_date=i[7]
+                    b_i_d=i[8]
+                cur.execute('select fair,route_id from bus where bus_id=?',[b_i_d])
+                res_bus=cur.fetchall()
+                fare=res_bus[0][0]
+                route_id=res_bus[0][1]
+                cur.execute('select s_name,e_name from route where r_id=?',[route_id])
+                res_route=cur.fetchall()
+                s_name=res_route[0][0]
+                e_name=res_route[0][1]
+                cur.execute('select booking_ref from booking_history where phone=?',[phone])
+                res_ref=cur.fetchall()
+                b_ref=res_ref[0][0]
+
+
+                Label(text="YOUR TICKET", font='Arial 12 bold', bg='blue',fg='white').grid(row=6,columnspan=12 )
+                Label(text="booking ref = "+b_ref,font='Arial 12 bold', fg='blue').grid(row=7,column=4)
+                Label(text="name = " + name, font='Arial 12 bold', fg='blue').grid(row=7, column=5)
+                Label(text="gender = " + gen, font='Arial 12 bold', fg='blue').grid(row=7, column=6)
+                Label(text="no of seats = " + str(seat), font='Arial 12 bold', fg='blue').grid(row=7, column=7)
+                Label(text="age = " + str(age), font='Arial 12 bold', fg='blue').grid(row=7, column=8)
+                Label(text="booked on = " + book_date, font='Arial 12 bold', fg='blue').grid(row=8, column=4)
+                Label(text="travel date = " + travel_date, font='Arial 12 bold', fg='blue').grid(row=8, column=5)
+                Label(text="fare = " + str(fare), font='Arial 12 bold', fg='blue').grid(row=8, column=6)
+                Label(text="total fare = " + str(fare*seat), font='Arial 12 bold', fg='blue').grid(row=8, column=7)
+
+
+
+
+        Label(root, image=bus).grid(row=0, column=0, columnspan=12, padx=80)
+        Label(root, text="Online Bus Booking System", font='Arial 30 bold', bg='LightCyan3', fg='red',relief=RAISED,padx=10,pady=10,bd=5).grid(row=2,
+                                                                                                         column=0,
+                                                                                                         columnspan=12,
+                                                                                                         pady=20)
+        Label(root, text="Check Your Booking", font='Arial 22 bold', bg='LightGreen').grid(row=3,
+                                                                                                            column=0,
+                                                                                                            pady=20,
+                                                                                                            columnspan=12,
+                                                                                                            padx=600)
+
+        Label(root, text="Enter your mobile no.", font='Arial 12 bold', fg='black').grid(row=4, column=5)
+        mob=Entry(root, font='Arial 12 bold')
+        mob.grid(row=4, column=6)
+
+        Button(root, text='Check Booking', font='Arial 12',command=check_tkt).grid(row=4, column=7)
+        Button(root, image=home,command=check_booking_to_home).grid(row=5, column=7,pady=20)
+        root.mainloop()
 
     def db_add_page(self):
         # Implement the add bus details page here
