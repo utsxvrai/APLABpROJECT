@@ -2,6 +2,28 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
+import sqlite3
+
+
+# Create a database or connect to one
+conn = sqlite3.connect('bus_booking.db')
+
+# Create cursor
+cur = conn.cursor()
+
+# Create table
+cur.execute("""CREATE TABLE IF NOT EXISTS bus(
+    bus_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    bus_no TEXT NOT NULL,
+    source TEXT NOT NULL,
+    destination TEXT NOT NULL,
+    date TEXT NOT NULL,
+    time TEXT NOT NULL,
+    seats INTEGER NOT NULL,
+    fare INTEGER NOT NULL
+)""")
+
+
 
 
 class BusBookingSystem:
