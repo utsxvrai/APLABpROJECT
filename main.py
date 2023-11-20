@@ -333,7 +333,7 @@ class BusBookingSystem:
         root.state("zoomed")
         h, w = root.winfo_screenheight(), root.winfo_screenwidth()
         root.geometry('%dx%d+0+0' % (w, h))
-        bus = PhotoImage(file='Bus_for_project.png')
+        bus = PhotoImage(file='bus.png')
         home=PhotoImage(file='home.png')
 
         def check_booking_to_home():
