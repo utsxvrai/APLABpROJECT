@@ -12,58 +12,19 @@ conn = sqlite3.connect('bus_booking.db')
 cur = conn.cursor()
 
 # Create table - bus
-cur.execute("""CREATE TABLE IF NOT EXISTS bus(   
-    bus_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    bus_no TEXT NOT NULL,
-    source TEXT NOT NULL,
-    destination TEXT NOT NULL,
-    date TEXT NOT NULL,
-    time TEXT NOT NULL,
-    seats INTEGER NOT NULL,
-    fare INTEGER NOT NULL
-)""")
+cur.execute('CREATE TABLE IF NOT EXISTS bus (b_id VARCHAR(5) NOT NULL PRIMARY KEY,b_type VARCHAR(10),capacity INT,fair INT,op_id VARCHAR(5) NOT NULL,route_id VARCHAR(5) NOT NULL,FOREIGN KEY (op_id) REFERENCES operator(opr_id),FOREIGN KEY (route_id) REFERENCES route(r_id))')
 
 # Create table - operator
-curr.execute("""CREATE TABLE IF NOT EXISTS operator(
-    CREATE TABLE IF NOT EXISTS operator (
-    opr_id VARCHAR(5) PRIMARY KEY,
-    name VARCHAR(20),
-    address VARCHAR(50),
-    phone CHAR(10),
-    email VARCHAR(30)
-)""")
+cur.execute("CREATE TABLE IF NOT EXISTS operator(opr_id VARCHAR(5) PRIMARY KEY,name VARCHAR(20),address VARCHAR(50),phone CHAR(10),email VARCHAR(30))")
 
 # Create table - running buses
-curr.execute("""CREATE TABLE IF NOT EXISTS runningBuses(
-    CREATE TABLE IF NOT EXISTS running (
-    b_id VARCHAR(5),
-    run_date DATE,
-    seat_avail INT,
-    FOREIGN KEY (b_id) REFERENCES bus(bus_id)
-)""")
+cur.execute("CREATE TABLE IF NOT EXISTS runningBuses(b_id VARCHAR(5),run_date DATE,seat_avail INT,FOREIGN KEY (b_id) REFERENCES bus(bus_id))")
 
 # Create table - route
-curr.execute("""CREATE TABLE IF NOT EXISTS route(
-    r_id VARCHAR(5) NOT NULL PRIMARY KEY,
-    s_name VARCHAR(20),
-    s_id VARCHAR(5),
-    e_name VARCHAR(20),
-    e_id VARCHAR(5)
-)""")
+cur.execute("CREATE TABLE IF NOT EXISTS route(r_id VARCHAR(5) NOT NULL PRIMARY KEY,s_name VARCHAR(20),s_id VARCHAR(5),d_name VARCHAR(20),d_id VARCHAR(5))")
 
 # Create table - booking history
-curr.execute("""CREATE TABLE IF NOT EXISTS bookingHistory(
-    name VARCHAR(20),
-    gender CHAR(1),
-    no_of_seat INT,
-    phone CHAR(10),
-    age INT,
-    booking_ref VARCHAR(10) NOT NULL PRIMARY KEY,
-    booking_date DATE,
-    travel_date DATE,
-    bid VARCHAR(5),
-    FOREIGN KEY (bid) REFERENCES bus(bus_id)
-)""")
+cur.execute("CREATE TABLE IF NOT EXISTS bookingHistory(name VARCHAR(20),gender CHAR(1),no_of_seat INT,phone CHAR(10),age INT,booking_ref VARCHAR(10) NOT NULL PRIMARY KEY,booking_date DATE,travel_date DATE,bid VARCHAR(5),FOREIGN KEY (bid) REFERENCES bus(bus_id))")
 
 
 class BusBookingSystem:
@@ -166,7 +127,20 @@ class BusBookingSystem:
                 dest = des.lower()
                 source = source.lower()
 
-                cur.execute("SELECT * FROM bus WHERE destination=? AND source=? AND date=?",(dest,source,date))
+                cur.execute("Select r_id from route where s_name=? and d_name=?", (source, dest))
+                busList = cur.fetchall()
+
+                if len(busList) == 0:
+                    messagebox.showerror('Error', 'No bus found!')
+                else:
+                    for i in busList:
+                        for j in i:
+                            route_id = str(j)
+                    
+                    cur.execute("Select b_id from running where r_id=?", (route_id))
+                    busCheck = cur.fetchall()
+                    #
+
 
 
             else:
