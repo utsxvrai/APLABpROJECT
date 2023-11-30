@@ -98,7 +98,7 @@ class bus_booking:
                     fp = fp.lower()
                     cur.execute('select r_id from route where s_name=? and e_name=?', (fp, tp))
                     res_route = cur.fetchall()
-                    print(res_route)
+                    # print(res_route)
                     if len(res_route)==0:
                         showerror('no route found','we are currently not running on this route')
                     else:
