@@ -42,14 +42,14 @@ class bus_booking:
             root.destroy()
             self.db_add_page()
 
-        Label(root, text='\n\n\n\n\n\n').grid(row=3, column=4)
-        Button(root, text='Seat Booking', font='Arial 14 bold', bg='Light green', fg='black',command=home_to_jouney_detail).grid(row=4, column=4)
-        Label(root, text='\n\n\n\n\n\n').grid(row=3, column=6)
-        Button(root, text='Check Booked Seat', font='Arial 14 bold', bg='green3', fg='black',command=home_to_check_booking).grid(row=4, column=6)
-        Label(root, text='\n\n\n\n\n\n').grid(row=3, column=8)
-        Button(root, text='Add Bus Details', font='Arial 14 bold', bg='green', fg='black',command=home_to_db_add_page ).grid(row=4, column=8)
-        Label(root, text='\n').grid(row=5, column=8)
-        Label(root, text='For Admin Only', fg='red').grid(row=6, column=8)
+        Label(root, text='\n\n\n\n\n\n', bg="cyan").grid(row=3, column=5)
+        Button(root, text='Seat Booking', font='Arial 14 bold', bg='navy', fg='white',command=home_to_jouney_detail).grid(row=4, column=5)
+        Label(root, text='\n\n\n\n\n\n', bg="cyan").grid(row=3, column=7)
+        Button(root, text='Check Booked Seat', font='Arial 14 bold', bg='navy', fg='white',command=home_to_check_booking).grid(row=4, column=7)
+        Label(root, text='\n\n\n\n\n\n', bg="cyan").grid(row=3, column=9)
+        Button(root, text='Add Bus Details', font='Arial 14 bold', bg='navy', fg='white',command=home_to_db_add_page ).grid(row=4, column=9)
+        
+        Label(root, text='For Admin Only', fg='red', bg="cyan").grid(row=6, column=9)
 
         root.mainloop()
 
@@ -61,13 +61,13 @@ class bus_booking:
 
         h, w = root.winfo_screenheight(), root.winfo_screenwidth()
         root.geometry('%dx%d+0+0' % (w, h))
-        Label(root, image=bus).pack()
+        root.configure(background='cyan')
+        Label(root, image=bus, bg="cyan").pack()
         Label(root, text="Online Bus Booking System", font='Arial 30 bold', bg='bisque', fg='red',relief=RAISED,padx=10,pady=10,bd=5).pack()
-        Label(root, text="\n\n\n\n\nName: Kaushal Kumar", font='Arial 16 bold', fg='blue').pack()
-        Label(root, text="\nEnr. No. : 221B201", font='Arial 16 bold', fg='blue').pack()
-        Label(root, text="\nMobile : 7783868382\n\n\n\n", font='Arial 16 bold', fg='blue').pack()
+        Label(root, text="\n\n\n\n\nName: Utsav Rai", font='Arial 16 bold', fg='blue', bg="cyan").pack()
+        Label(root, text="\nEnr. No. : 221B425", font='Arial 16 bold', fg='blue', bg="cyan").pack()
+        Label(root, text="\nMobile : 8423829911\n\n\n\n", font='Arial 16 bold', fg='blue', bg="cyan").pack()
         Label(root, text="Submitted to: Dr. Mahesh Kumar", font='Arial 15 bold', bg='bisque',padx=10,pady=10, fg='red').pack()
-        Label(root, text="Project Based Learning", font='Arial 15 bold', fg='red').pack()
 
         def cover_to_home(event):
             root.destroy()
@@ -82,6 +82,7 @@ class bus_booking:
         root.state("zoomed")
         h, w = root.winfo_screenheight(), root.winfo_screenwidth()
         root.geometry('%dx%d+0+0' % (w, h))
+        root.configure(background='cyan')
 
         def journey_to_home():
             root.destroy()
@@ -168,7 +169,7 @@ class bus_booking:
                                         fare=j[0]
 
                                     def show_button():
-                                        Button(root, text='PROCEED', bg='green', fg='black', font='Arial 12 bold',
+                                        Button(root, text='PROCEED', bg='navy', fg='white', font='Arial 12 bold',
                                                command=proceed).grid(row=10, column=9, padx=30)
 
                                     var=Radiobutton(root,value=bus_no,variable=bus_select,command=show_button)
@@ -184,31 +185,31 @@ class bus_booking:
                                 def proceed():
                                     f_bus_id = bus_select.get()
 
-                                    Label(root,text="\n\n\n").grid(row=10,columnspan=12)
-                                    Label(root,text='Fill passenger details to book the bus', bg='light green', fg='dark green', font='Arial 18 bold').grid(row=11,columnspan=12)
-                                    Label(root, text="\n\n\n").grid(row=12,columnspan=12)
+                                    Label(root,text="\n\n\n", bg="cyan").grid(row=10,columnspan=12)
+                                    Label(root,text='Fill passenger details to book the bus', bg='navy', fg='white', font='Arial 18 bold').grid(row=11,columnspan=12)
+                                    Label(root, text="\n\n\n", bg="cyan").grid(row=12,columnspan=12)
 
-                                    Label(root,text='name',font='Arial 10 bold').grid(row=13,column=3)
+                                    Label(root,text='name',font='Arial 10 bold').grid(row=13,column=1)
                                     pname = Entry(root, font='Arial 12 bold', fg='black')
-                                    pname.grid(row=13,column=4)
+                                    pname.grid(row=13,column=2)
 
                                     gender = StringVar()
                                     gender.set("Select Gender")
                                     opt = ["M", "F", "T"]
                                     g_menu = OptionMenu(root, gender, *opt)
-                                    g_menu.grid(row=13, column=6)
+                                    g_menu.grid(row=13, column=4)
 
-                                    Label(root, text='no of seats', font='Arial 10 bold').grid(row=13, column=7)
+                                    Label(root, text='no of seats', font='Arial 10 bold').grid(row=13, column=5)
                                     pseat=Entry(root, font='Arial 12 bold', fg='black')
-                                    pseat.grid(row=13,column=8)
+                                    pseat.grid(row=13,column=6)
 
-                                    Label(root, text='mobile', font='Arial 10 bold').grid(row=14, column=3)
+                                    Label(root, text='mobile', font='Arial 10 bold').grid(row=14, column=1)
                                     pmobile = Entry(root, font='Arial 12 bold', fg='black')
-                                    pmobile.grid(row=14, column=4)
+                                    pmobile.grid(row=14, column=2)
 
-                                    Label(root, text='age', font='Arial 10 bold').grid(row=14, column=5)
+                                    Label(root, text='age', font='Arial 10 bold').grid(row=14, column=3)
                                     page = Entry(root, font='Arial 12 bold', fg='black')
-                                    page.grid(row=14, column=6)
+                                    page.grid(row=14, column=4)
 
                                     def book_seat():
                                         name=pname.get()
@@ -253,8 +254,8 @@ class bus_booking:
                                             showerror("invalid mobile no","enter valid mobile no")
 
 
-                                    Button(root, text='BOOK SEAT', bg='green', fg='black', font='Arial 12 bold',
-                                           command=book_seat).grid(row=16, column=9, padx=30)
+                                    Button(root, text='BOOK SEAT', bg='navy', fg='white', font='Arial 12 bold',
+                                           command=book_seat).grid(row=16, column=7, padx=30)
 
 
 
@@ -267,33 +268,33 @@ class bus_booking:
 
 
         bus = PhotoImage(file='Bus_for_project.png')
-        Label(root, image=bus).grid(row=0, column=3, columnspan=12)
+        Label(root, image=bus, bg="cyan").grid(row=0, column=2, columnspan=12   , padx=w // 3, pady=20)
         Label(root, text="Online Bus Booking System", font='Arial 30 bold', bg='bisque', fg='red',relief=RAISED,padx=10,pady=10,bd=5).grid(row=2,
-                                                                                                          column=3,
+                                                                                                          column=2,
                                                                                                           pady=20,
-                                                                                                          columnspan=12)
-        Label(root, text='Enter Journey Details', bg='light green', fg='dark green', font='Arial 18 bold').grid(row=3,
-                                                                                                                column=3,
-                                                                                                                columnspan=12,
+                                                                                                          columnspan=9)
+        Label(root, text='Enter Journey Details', bg='yellow', fg='dark green', font='Arial 18 bold').grid(row=3,
+                                                                                                                column=2,
+                                                                                                                columnspan=9,
                                                                                                                 pady=20)
-        Label(root, text='To', fg='black', font='Arial 12 bold').grid(row=4, column=3, padx=30)
+        Label(root, text='To', fg='black', font='Arial 12 bold').grid(row=4, column=1, padx=20)
         to_place = Entry(root, font='Arial 12 bold', fg='black')
-        to_place.grid(row=4, column=4, padx=50)
+        to_place.grid(row=4, column=2, padx=50)
 
-        Label(root, text='From', fg='black', font='Arial 12 bold').grid(row=4, column=5, padx=30)
+        Label(root, text='From', fg='black', font='Arial 12 bold').grid(row=4, column=3, padx=20)
         from_place = Entry(root, font='Arial 12 bold', fg='black')
-        from_place.grid(row=4, column=6, padx=50)
+        from_place.grid(row=4, column=4, padx=50)
 
-        Label(root, text='Journey date', fg='black', font='Arial 12 bold').grid(row=4, column=7, padx=30)
+        Label(root, text='Journey date', fg='black', font='Arial 12 bold').grid(row=4, column=5, padx=20)
         journey_date = Entry(root, font='Arial 12 bold', fg='black')
-        journey_date.grid(row=4, column=8, padx=50)
-        Label(root,text="date formate YYYY-MM-DD").grid(row=5,column=8)
+        journey_date.grid(row=4, column=6, padx=50)
+        Label(root,text="date formate YYYY-MM-DD", bg="cyan").grid(row=5,column=6)
 
-        Button(root, text='Show Bus', bg='green', fg='black', font='Arial 12 bold',command=show_bus).grid(row=4, column=9, padx=30)
+        Button(root, text='Show Bus', bg='navy', fg='white', font='Arial 12 bold',command=show_bus).grid(row=4, column=7, padx=30)
 
         home = PhotoImage(file='home.png')
 
-        Button(root, image=home,command=journey_to_home).grid(row=4, column=10)
+        Button(root, image=home,command=journey_to_home).grid(row=4, column=8)
 
         root.mainloop()
 
@@ -303,6 +304,7 @@ class bus_booking:
         root.state("zoomed")
         h, w = root.winfo_screenheight(), root.winfo_screenwidth()
         root.geometry('%dx%d+0+0' % (w, h))
+        root.configure(background='cyan')
         bus = PhotoImage(file='Bus_for_project.png')
         home=PhotoImage(file='home.png')
 
@@ -310,6 +312,9 @@ class bus_booking:
             root.destroy()
             self.home_page()
         def check_tkt():
+            root.configure(background='cyan')
+            
+            
             mobile=mob.get()
             if len(mobile)==10 and mobile.isdigit():
                 cur.execute('select * from booking_history where phone=?',[mobile])
@@ -337,26 +342,26 @@ class bus_booking:
                 b_ref=res_ref[0][0]
 
 
-                Label(text="YOUR TICKET", font='Arial 12 bold', bg='blue',fg='white').grid(row=6,columnspan=12 )
-                Label(text="booking ref = "+b_ref,font='Arial 12 bold', fg='blue').grid(row=7,column=4)
-                Label(text="name = " + name, font='Arial 12 bold', fg='blue').grid(row=7, column=5)
-                Label(text="gender = " + gen, font='Arial 12 bold', fg='blue').grid(row=7, column=6)
-                Label(text="no of seats = " + str(seat), font='Arial 12 bold', fg='blue').grid(row=7, column=7)
-                Label(text="age = " + str(age), font='Arial 12 bold', fg='blue').grid(row=7, column=8)
-                Label(text="booked on = " + book_date, font='Arial 12 bold', fg='blue').grid(row=8, column=4)
-                Label(text="travel date = " + travel_date, font='Arial 12 bold', fg='blue').grid(row=8, column=5)
-                Label(text="fare = " + str(fare), font='Arial 12 bold', fg='blue').grid(row=8, column=6)
-                Label(text="total fare = " + str(fare*seat), font='Arial 12 bold', fg='blue').grid(row=8, column=7)
+                Label(text="YOUR TICKET", font='Arial 12 bold', bg='navy',fg='white').grid(row=6,columnspan=12 )
+                Label(text="booking ref = "+b_ref,font='Arial 12 bold', fg='navy').grid(row=7,column=4)
+                Label(text="name = " + name, font='Arial 12 bold', fg='navy').grid(row=7, column=5)
+                Label(text="gender = " + gen, font='Arial 12 bold', fg='navy').grid(row=7, column=6)
+                Label(text="no of seats = " + str(seat), font='Arial 12 bold', fg='navy').grid(row=7, column=7)
+                Label(text="age = " + str(age), font='Arial 12 bold', fg='navy').grid(row=7, column=8)
+                Label(text="booked on = " + book_date, font='Arial 12 bold', fg='navy').grid(row=8, column=4)
+                Label(text="travel date = " + travel_date, font='Arial 12 bold', fg='navy').grid(row=8, column=5)
+                Label(text="fare = " + str(fare), font='Arial 12 bold', fg='navy').grid(row=8, column=6)
+                Label(text="total fare = " + str(fare*seat), font='Arial 12 bold', fg='navy').grid(row=8, column=7)
 
 
 
 
-        Label(root, image=bus).grid(row=0, column=0, columnspan=12, padx=80)
+        Label(root, image=bus, bg="cyan").grid(row=0, column=0, columnspan=12, padx=80)
         Label(root, text="Online Bus Booking System", font='Arial 30 bold', bg='bisque', fg='red',relief=RAISED,padx=10,pady=10,bd=5).grid(row=2,
                                                                                                          column=0,
                                                                                                          columnspan=12,
                                                                                                          pady=20)
-        Label(root, text="Check Your Booking", font='Arial 22 bold', bg='LightGreen').grid(row=3,
+        Label(root, text="Check Your Booking", font='Arial 22 bold', bg='yellow', fg="dark green").grid(row=3,
                                                                                                             column=0,
                                                                                                             pady=20,
                                                                                                             columnspan=12,
@@ -366,7 +371,7 @@ class bus_booking:
         mob=Entry(root, font='Arial 12 bold')
         mob.grid(row=4, column=6)
 
-        Button(root, text='Check Booking', font='Arial 12',command=check_tkt).grid(row=4, column=7)
+        Button(root, text='Check Booking', bg="navy",fg="white",font='Arial 12',command=check_tkt).grid(row=4, column=7)
         Button(root, image=home,command=check_booking_to_home).grid(row=5, column=7,pady=20)
         root.mainloop()
 
@@ -377,6 +382,7 @@ class bus_booking:
         root.state("zoomed")
         h, w = root.winfo_screenheight(), root.winfo_screenwidth()
         root.geometry('%dx%d+0+0' % (w, h))
+        root.configure(background='cyan')
 
         bus = PhotoImage(file='.\\Bus_for_project.png')
 
@@ -396,23 +402,23 @@ class bus_booking:
             root.destroy()
             self.add_bus_running_page()
 
-        Label(root, image=bus).grid(row=1, column=1, columnspan=12, padx=w // 2.5)
+        Label(root, image=bus, bg="cyan").grid(row=1, column=1, columnspan=12, padx=w // 3)
         Label(root, text="Online Bus Booking System", font='Arial 30 bold', bg='bisque', fg='red',relief=RAISED,padx=10,pady=10,bd=5).grid(row=2,
                                                                                                             column=2,
                                                                                                             columnspan=9,
-                                                                                                            padx=w // 2.5)
-        Label(root, text='\n').grid(row=3, column=2)
-        Label(root, text="Add New Details To Database", font='Arial 16 bold', bg='LightGreen').grid(row=4,
+                                                                                                            padx=w // 3)
+        Label(root, text='\n', bg="cyan").grid(row=3, column=2)
+        Label(root, text="Add New Details To Database", font='Arial 16 bold', bg='navy' , fg="white").grid(row=4,
                                                                                                             column=2,
                                                                                                             columnspan=9,
                                                                                                             padx=w // 2.5)
-        Label(root, text='\n').grid(row=5, column=2)
+        Label(root, text='\n', bg="cyan").grid(row=5, column=2)
 
-        Button(root, text='New Operator', fg='black', bg='light green', font='Arial 12',command=db_add_to_add_op).grid(row=6, column=1,
+        Button(root, text='New Operator', fg='white', bg='navy', font='Arial 12',command=db_add_to_add_op).grid(row=6, column=1,
                                                                                               columnspan=7)
-        Button(root, text='New Bus', fg='black', bg='orange', font='Arial 12',command=db_add_to_add_bus).grid(row=6, column=5, columnspan=2)
-        Button(root, text='New Route', fg='black', bg='light blue', font='Arial 12',command=db_add_to_add_route).grid(row=6, column=6, columnspan=2)
-        Button(root, text='New Run', fg='black', bg='rosy brown', font='Arial 12',command=db_add_to_add_running).grid(row=6, column=7, columnspan=2)
+        Button(root, text='New Bus', fg='white', bg='navy', font='Arial 12',command=db_add_to_add_bus).grid(row=6, column=5, columnspan=2)
+        Button(root, text='New Route', fg='white', bg='navy', font='Arial 12',command=db_add_to_add_route).grid(row=6, column=6, columnspan=2)
+        Button(root, text='New Run', fg='white', bg='navy', font='Arial 12',command=db_add_to_add_running).grid(row=6, column=7, columnspan=2)
 
         root.mainloop()
 
@@ -422,6 +428,7 @@ class bus_booking:
         root.state("zoomed")
         h, w = root.winfo_screenheight(), root.winfo_screenwidth()
         root.geometry('%dx%d+0+0' % (w, h))
+        root.configure(background='cyan')
 
         bus = PhotoImage(file='Bus_for_project.png')
         home=PhotoImage(file='home.png')
@@ -464,11 +471,11 @@ class bus_booking:
             root.destroy()
             self.home_page()
 
-        Label(root, image=bus).grid(row=0, column=0, columnspan=12)
+        Label(root, image=bus, bg="cyan").grid(row=0, column=0, columnspan=12)
         Label(root, text="Online Bus Booking System", font='Arial 30 bold', bg='bisque', fg='red',relief=RAISED,padx=10,pady=10,bd=5).grid(row=1,
                                                                                                           column=0,
                                                                                                           columnspan=12)
-        Label(root, text="Add Bus Operator Details", font='Arial 20 bold', bg='gainsboro', fg='green4').grid(row=2,
+        Label(root, text="Add Bus Operator Details", font='Arial 20 bold', bg='navy', fg='white').grid(row=2,
                                                                                                              column=0,
                                                                                                              pady=20,
                                                                                                              columnspan=12)
@@ -490,8 +497,8 @@ class bus_booking:
 
 
 
-        Button(root, text="Add", font='Arial 12 bold', bg='green2', fg='black',command=op_add).grid(row=3, column=10, padx=10)
-        Button(root, text="Edit", font='Arial 12 bold', bg='green2', fg='black').grid(row=3, column=11, padx=10)
+        Button(root, text="Add", font='Arial 12 bold', bg='navy', fg='white',command=op_add).grid(row=3, column=10, padx=10)
+        Button(root, text="Edit", font='Arial 12 bold', bg='navy', fg='white').grid(row=3, column=11, padx=10)
 
         
         Button(root, image=home,command=db_add_to_home).grid(row=7, column=11)
@@ -503,10 +510,12 @@ class bus_booking:
         root.state("zoomed")
         h, w = root.winfo_screenheight(), root.winfo_screenwidth()
         root.geometry('%dx%d+0+0' % (w, h))
+        root.configure(background='cyan')
 
         bus = PhotoImage(file='Bus_for_project.png')
         
         def bus_add():
+            
             bid=b_id.get()
             dmenu=bus_type.get()
             capa=capacity.get()
@@ -548,11 +557,11 @@ class bus_booking:
             root.destroy()
             self.home_page()
 
-        Label(root, image=bus).grid(row=0, column=0, columnspan=12)
+        Label(root, image=bus, bg="cyan").grid(row=0, column=0, columnspan=12)
         Label(root, text="Online Bus Booking System", font='Arial 30 bold', bg='bisque', fg='red',relief=RAISED,padx=10,pady=10,bd=5).grid(row=1,
                                                                                                           column=0,
                                                                                                           columnspan=12)
-        Label(root, text="Add Bus Details", font='Arial 20 bold', bg='gainsboro', fg='green4').grid(row=2, column=0,
+        Label(root, text="Add Bus Details", font='Arial 20 bold', bg='navy', fg='white').grid(row=2, column=0,
                                                                                                     pady=20,
                                                                                                     columnspan=12)
         Label(root, text="Bus ID", font='Arial 12 bold', fg='black').grid(row=3, column=1, pady=50)
@@ -581,9 +590,9 @@ class bus_booking:
         r_id = Entry(root, font="Arial 12")
         r_id.grid(row=3, column=11)
 
-        Button(root, text="Add Bus", font='Arial 12 bold', bg='green2', fg='black',command=bus_add).grid(row=5, column=4, pady=20,
+        Button(root, text="Add Bus", font='Arial 12 bold', bg='navy', fg='white',command=bus_add).grid(row=5, column=4, pady=20,
                                                                                          columnspan=4)
-        Button(root, text="Edit Bus", font='Arial 12 bold', bg='green2', fg='black').grid(row=5, column=5, pady=20,
+        Button(root, text="Edit Bus", font='Arial 12 bold', bg='navy', fg='white').grid(row=5, column=5, pady=20,
                                                                                           columnspan=4)
 
         
@@ -597,6 +606,7 @@ class bus_booking:
         root=Tk()
         root.title("ADD ROUTE PAGE")
         root.state("zoomed")
+        root.configure(background='cyan')
         def add_route_to_home():
             root.destroy()
             self.home_page()
@@ -622,11 +632,11 @@ class bus_booking:
         root.geometry('%dx%d+0+0' % (w, h))
 
         bus = PhotoImage(file='Bus_for_project.png')
-        Label(root, image=bus).grid(row=0, column=0, columnspan=12)
+        Label(root, image=bus , bg="cyan").grid(row=0, column=0, columnspan=12)
         Label(root, text="Online Bus Booking System", font='Arial 30 bold', bg='bisque', fg='red',relief=RAISED,padx=10,pady=10,bd=5).grid(row=1,
                                                                                                           column=0,
                                                                                                           columnspan=12)
-        Label(root, text="Add Bus Route Details", font='Arial 20 bold', bg='gainsboro', fg='green4').grid(row=2,
+        Label(root, text="Add Bus Route Details", font='Arial 20 bold', bg='navy', fg='white').grid(row=2,
                                                                                                           column=0,
                                                                                                           pady=20,
                                                                                                           columnspan=12)
@@ -651,9 +661,9 @@ class bus_booking:
         e_id=Entry(root, font="Arial 12")
         e_id.grid(row=4, column=5, padx=50)
 
-        Button(root, text="Add Route", font='Arial 12 bold', bg='green2', fg='black',command=add_route).grid(row=3, column=7, pady=20,
+        Button(root, text="Add Route", font='Arial 12 bold', bg='navy', fg='white',command=add_route).grid(row=3, column=7, pady=20,
                                                                                            padx=10)
-        Button(root, text="Delete Route", font='Arial 12 bold', bg='green2', fg='black').grid(row=3, column=9, pady=20,
+        Button(root, text="Delete Route", font='Arial 12 bold', bg='navy', fg='white').grid(row=3, column=9, pady=20,
                                                                                               padx=10)
 
         home = PhotoImage(file='home.png')
@@ -667,6 +677,7 @@ class bus_booking:
         root.state("zoomed")
         h, w = root.winfo_screenheight(), root.winfo_screenwidth()
         root.geometry('%dx%d+0+0' % (w, h))
+        root.configure(background='cyan')
 
         bus = PhotoImage(file='Bus_for_project.png')
 
@@ -679,32 +690,32 @@ class bus_booking:
             s_avail=seat_avail.get()
             cur.execute('insert into running(b_id,run_date,seat_avail) values (?,?,?)',(bid,run_date,s_avail))
             con.commit()
-            showinfo('sucess','run added successfully!!')
+            showinfo('Sucess','run added successfully!!')
 
-        Label(root, image=bus).grid(row=0, column=0, columnspan=12)
+        Label(root, image=bus , bg="cyan").grid(row=0, column=0, columnspan=12)
         Label(root, text="Online Bus Booking System", font='Arial 30 bold', bg='bisque', fg='red',relief=RAISED,padx=10,pady=10,bd=5).grid(row=1,
                                                                                                           column=0,
                                                                                                           columnspan=12)
-        Label(root, text="Add Bus Running Details", font='Arial 20 bold', bg='gainsboro', fg='green4').grid(row=2,
+        Label(root, text="Add Bus Running Details", font='Arial 20 bold', bg='navy', fg='white').grid(row=2,
                                                                                                             column=0,
                                                                                                             pady=20,
                                                                                                             columnspan=12)
-        Label(root, text="Bus ID", font='Arial 12 bold', fg='black').grid(row=3, column=0, pady=50)
+        Label(root, text="Bus ID ", font='Arial 12 bold', fg='black').grid(row=3, column=0)
         bus_id=Entry(root, font="Arial 12")
         bus_id.grid(row=3, column=1, padx=50)
 
-        Label(root, text="Running Date", font='Arial 12 bold', fg='black').grid(row=3, column=2)
+        Label(root, text="Running Date ", font='Arial 12 bold', fg='black').grid(row=3, column=2)
         running_date=Entry(root, font="Arial 12")
         running_date.grid(row=3, column=3, padx=50)
         Label(root,text="date format YYYY-MM-DD").grid(row=4,column=3)
 
-        Label(root, text="Seat Available", font='Arial 12 bold', fg='black').grid(row=3, column=4)
+        Label(root, text="Seat Available ", font='Arial 12 bold', fg='black').grid(row=3, column=4)
         seat_avail=Entry(root, font="Arial 12")
         seat_avail.grid(row=3, column=5, padx=50)
 
-        Button(root, text="Add Run", font='Arial 12 bold', bg='green2', fg='black',command=add_run).grid(row=3, column=6, pady=20,
+        Button(root, text="Add Run ", font='Arial 12 bold', bg='navy', fg='white',command=add_run).grid(row=3, column=6, pady=20,
                                                                                            padx=10)
-        Button(root, text="Delete Run", font='Arial 12 bold', bg='green2', fg='black').grid(row=3, column=7, pady=20,padx=10)
+        Button(root, text="Delete Run ", font='Arial 12 bold', bg='navy', fg='white').grid(row=3, column=7, pady=20,padx=10)
 
         home = PhotoImage(file='home.png')
 

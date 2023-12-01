@@ -1,0 +1,1 @@
+, bg='navy', fg='white'
