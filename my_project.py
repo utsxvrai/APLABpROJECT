@@ -215,44 +215,61 @@ class bus_booking:
                                         name=pname.get()
                                         gen=gender.get()
                                         seats=pseat.get()
-                                        seats=int(seats)
+                                        
+                                        if seats:
+                                            seats=int(seats)
+                                        else:
+                                            seats=0
                                         age=page.get()
-                                        age=int(age)
+                                        if age:
+                                            age=int(age)
+                                        else:
+                                            age=0
                                         mobile=pmobile.get()
                                         bid=bus_select.get()
-                                        if len(mobile)==10:
-                                            if len(name)>0 and len(name)<20:
-                                                if age>0 and age<150:
-                                                    if seats>0 and seats<60:
-                                                        #print(name, gen, age, mobile, seats, bid)
-                                                        booking_ref=1
-                                                        cur.execute('select booking_ref from booking_history')
-                                                        res_ref=cur.fetchall()
-                                                        ref=[]
-                                                        for i in res_ref:
-                                                            ref.append(i[0])
-                                                        booking_ref=len(ref)+1
-                                                        #print(booking_ref)
-                                                        cur_date=date.today()
-                                                        cur.execute('insert into booking_history(name,gender,no_of_seat,phone,age,booking_ref,booking_date,travel_date,bid) values(?,?,?,?,?,?,?,?,?)',(name,gen,seats,mobile,age,booking_ref,cur_date,jd,bid))
-                                                        con.commit()
-                                                        cur.execute('select seat_avail from running where b_id=? and run_date=?',(bid,jd))
-                                                        res_s=cur.fetchall()
-                                                        s=res_s[0][0]
-                                                        s=s-seats
-                                                        cur.execute('update running set seat_avail=? where b_id=? and run_date=?',(s,bid,jd))
-                                                        con.commit()
-                                                        showinfo("succefull","booking successfull")
+                                        cur.execute("select seat_avail from running where b_id=? and run_date=? ", (bid,jd))
+                                        gg = cur.fetchall()
+                                        print(gg)
+                                        if gg and gg[0][0] >= seats:
+                                            if gen =='M' or gen=='F' or gen=='T':
+                                                if len(name)>0 and len(name)<20:
+                                                    if seats>0 and seats<=5:
+                                                        if len(mobile)==10 and mobile.isdigit():
+                                                            if age>17 and age<120:
+                                                            
+                                                            #print(name, gen, age, mobile, seats, bid)
+                                                                booking_ref=1
+                                                                cur.execute('select booking_ref from booking_history')
+                                                                res_ref=cur.fetchall()
+                                                                ref=[]
+                                                                for i in res_ref:
+                                                                    ref.append(i[0])
+                                                                booking_ref=len(ref)+1
+                                                                #print(booking_ref)
+                                                                cur_date=date.today()
+                                                                cur.execute('insert into booking_history(name,gender,no_of_seat,phone,age,booking_ref,booking_date,travel_date,bid) values(?,?,?,?,?,?,?,?,?)',(name,gen,seats,mobile,age,booking_ref,cur_date,jd,bid))
+                                                                con.commit()
+                                                                cur.execute('select seat_avail from running where b_id=? and run_date=?',(bid,jd))
+                                                                res_s=cur.fetchall()
+                                                                s=res_s[0][0]
+                                                                s=s-seats
+                                                                cur.execute('update running set seat_avail=? where b_id=? and run_date=?',(s,bid,jd))
+                                                                con.commit()
+                                                                showinfo("succefull","booking successfull")
 
+                                                            else:
+                                                                showerror("incorrect age","enter valid age")
+                                                        else:
+                                                            showerror("incorrect mobile no","enter valid mobile no")
                                                     else:
-                                                        showerror("booking limit exceed","you can only book upto 5 seats")
+                                            
+                                                        showerror("incorrect seat no","can't book more than 5 seats")
                                                 else:
-                                                    showerror("incorrect age","enter valid age")
+                                                    showerror("incorrect name","enter valid name")
                                             else:
-                                                showerror("incorrect name","enter valid name")
+                                                showerror("invalid gender","enter valid gender")
                                         else:
-                                            showerror("invalid mobile no","enter valid mobile no")
-
+                                            showerror("Seat not Available", "Seats not Available")
 
                                     Button(root, text='BOOK SEAT', bg='navy', fg='white', font='Arial 12 bold',
                                            command=book_seat).grid(row=16, column=7, padx=30)
